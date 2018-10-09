@@ -25,5 +25,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^books/', include('books.urls')),
     url(r'^$', RedirectView.as_view(url='/books/', permanent=True)),
-    static(settings.STATIC_URL, document_root=settings.STATIC_ROOT),
+
 ]
+
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
