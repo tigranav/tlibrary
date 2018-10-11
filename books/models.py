@@ -49,12 +49,21 @@ class BookItem(models.Model):
         """
         String for representing the MyModelName object (in Admin site etc.)
         """
-        return self.file_format+" "+self.file_size
+        return self.file_format+" "+str(self.file_size)
 
 
 class Storage(models.Model):
     name = models.CharField(max_length=10, help_text="Name of storage")
     type = models.IntegerField(choices=STORAGE_TYPE_CHOICES, default=1, help_text="Storage type")
+    size = models.IntegerField(help_text="Size of storage in bytes")
+    used = models.IntegerField(help_text="usage storage in bytes")
+    available = models.BooleanField(help_text="status of avaliable")
+    last_accessable = models.DateTimeField(help_text="Last used timestamp")
+    def __str__(self):
+        """
+        String for representing the MyModelName object (in Admin site etc.)
+        """
+        return self.name+" ("+str(self.type)+")"
 
 
 class BookItemPlace(models.Model):
