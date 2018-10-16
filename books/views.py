@@ -6,6 +6,7 @@ from django.shortcuts import  render, get_object_or_404
 # Create your views here.
 from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
 
 
 class IndexView(generic.ListView):
@@ -20,9 +21,20 @@ class DetailView(generic.DetailView):
     template_name = 'books/detail.html'
 
 
-class CreateBook(CreateView):
+class CreateView(CreateView):
     model = Book
     fields = ['title', 'author', 'year', 'pages_count', 'description', 'isbn']
+
+
+class UpdateView(UpdateView):
+    model = Book
+    fields = ['title', 'author', 'year', 'pages_count', 'description', 'isbn']
+
+
+class DeleteView(DeleteView):
+    model = Book
+    success_url = reverse_lazy('book:index')
+
 
 
 

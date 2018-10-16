@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.urls import reverse
 
 # Create your models here.
 
@@ -19,7 +20,7 @@ COMPRESSOR_CHOICES = (
 )
 
 class Book(models.Model):
-    old = models.BigIntegerField(help_text="old id")
+    old = models.BigIntegerField(help_text="old id",default=0)
     title = models.CharField(max_length=255, help_text="Title of books")
     author = models.CharField(max_length=255, help_text="authors")
     year = models.IntegerField(help_text="year")
@@ -38,9 +39,13 @@ class Book(models.Model):
         """
         return self.title+" "+self.author
 
+    def get_absolute_url(self):
+        return reverse('book:detail', kwargs={'pk': self.pk})
+
+
 
 class BookItem(models.Model):
-    book_id = models.ForeignKey('Book',on_delete=models.CASCADE,)
+    book_id = models.ForeignKey('Book',on_delete=models.CASCADE)
     file_format = models.CharField(max_length=10, help_text="Format of file pdf,djvu,doc,fb2...")
     file_size = models.IntegerField(help_text="Size of file in bytes")
     compressor = models.IntegerField(choices=COMPRESSOR_CHOICES, default=1, help_text="Compressor type")
@@ -60,9 +65,6 @@ class Storage(models.Model):
     used = models.IntegerField(help_text="usage storage in bytes", default=0)
     available = models.BooleanField(help_text="status of avaliable",default=False)
     last_accessable = models.DateTimeField(help_text="Last used timestamp", default=None)
-
-    def get_absolute_url(selfself):
-        return reverse('book:detail', kwargs={'pk': self.pk})
 
     def __str__(self):
         """
